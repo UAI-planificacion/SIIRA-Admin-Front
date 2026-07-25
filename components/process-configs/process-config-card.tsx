@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { CalendarClock, Users, Clock, Hash } from 'lucide-react';
+import { CalendarClock, Users, Clock, Hash, ClipboardCopy } from 'lucide-react';
 
 import {
     Card,
@@ -51,62 +51,76 @@ export function ProcessConfigCard({
 }) {
     return (
         <Card className="flex flex-col transition-shadow hover:shadow-md">
-            <CardHeader className="flex-row items-start justify-between space-y-0">
-                <div className="space-y-1">
+            <CardHeader className="space-y-0">
+                <div className="flex gap-2 items-center justify-between w-full">
                     <CardTitle className="text-lg">{config.academicPeriod}</CardTitle>
 
                     <StatusBadge status={config.status} />
                 </div>
 
-                <div className="flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
+                {/* <span className='text-[10px] text-muted-foreground underline flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors'>
+                    { config.id }
+                    <ClipboardCopy className='size-2.5' />
+                </span> */}
+
+                {/* <div className="flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
                     <Users className="h-3.5 w-3.5 text-muted-foreground" />
 
                     <span className="text-sm font-semibold">
                         {config.totalRealStudents}
                     </span>
-                </div>
+                </div> */}
             </CardHeader>
 
             <CardContent className="flex-1 space-y-3">
                 <div className="grid gap-3 sm:grid-cols-2">
                     <InfoRow
-                        icon={CalendarClock}
-                        label="Borrador inicio"
-                        value={formatDate(config.draftStartDate)}
+                        icon    = { CalendarClock }
+                        label   = "Borrador inicio"
+                        value   = { formatDate( config.draftStartDate )}
                     />
 
                     <InfoRow
-                        icon={CalendarClock}
-                        label="Borrador fin"
-                        value={formatDate(config.draftEndDate)}
+                        icon    = { CalendarClock }
+                        label   = "Borrador fin"
+                        value   = { formatDate( config.draftEndDate )}
                     />
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
                     <InfoRow
-                        icon={Users}
-                        label="Toma de ramos inicio"
-                        value={formatDate(config.startDate)}
+                        icon    = { Users }
+                        label   = "Toma de ramos inicio"
+                        value   = { formatDate( config.startDate )}
                     />
 
                     <InfoRow
-                        icon={Users}
-                        label="Toma de ramos fin"
-                        value={formatDate(config.endDate)}
+                        icon    = { Users }
+                        label   = "Toma de ramos fin"
+                        value   = { formatDate( config.endDate )}
                     />
                 </div>
 
-                <div className="flex items-center gap-2 rounded-md border bg-muted/40 px-3 py-2">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
+                <div className="flex items-center gap-2 rounded-md border bg-muted/40 px-3 py-2 justify-between">
+                    <div className='flex gap-2 items-center'>
+                        <Clock className="h-4 w-4 text-muted-foreground" />
 
-                    <span className="text-sm font-medium">
-                        {config.dailyStartHour}:00 - {config.dailyEndHour}:00 hrs
-                    </span>
-
-                    <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
+                        <span className="text-sm font-medium">
+                            {config.dailyStartHour}:00 - {config.dailyEndHour}:00 hrs
+                        </span>
+                    </div>
+                    {/* <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
                         <Hash className="h-3 w-3" />
                         { config.id.slice( -6 )}
-                    </span>
+                    </span> */}
+
+                    <div className="flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
+                        <Users className="h-3.5 w-3.5 text-muted-foreground" />
+
+                        <span className="text-sm font-semibold">
+                            { config.totalRealStudents }
+                        </span>
+                    </div>
                 </div>
             </CardContent>
 
