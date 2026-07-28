@@ -49,20 +49,23 @@ export function DeleteProcessConfigDialog({
     };
 
     const trigger =
-        variant === 'icon' ? (
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive">
-                <Trash2 className="h-4 w-4" />
+        variant === 'icon'
+        ? (
+            <Button
+                variant     = "ghost"
+                size        = "icon"
+                className   = "h-8 w-8 text-destructive"
+            >
+                <Trash2 className="size-3.5" />
             </Button>
-            ) : (
-            <Button variant="destructive" size="sm">
-                <Trash2 className="mr-2 h-4 w-4" />
+        ) : (
+            <Button variant="destructive" size="sm" className="gap-1.5">
+                <Trash2 className="size-3.5" />
                 Eliminar
             </Button>
         );
 
-    const periodLabel = processConfig.period
-        ? `${processConfig.period.id} - ${processConfig.period.name}`
-        : processConfig.periodId;
+    const periodLabel = `${processConfig.period.id} - ${processConfig.period.name}`;
 
     return (
         <AlertDialog open={ open } onOpenChange={ setOpen }>
