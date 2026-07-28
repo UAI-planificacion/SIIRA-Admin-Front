@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, cloneElement, ReactElement } from 'react';
 
 import { toast }        from 'sonner';
 import { Pencil, Plus } from 'lucide-react';
@@ -40,17 +40,19 @@ import { Button }                       from '@/components/ui/button';
 
 
 interface ProcessConfigDialogProps {
-    mode: 'create' | 'edit';
-    processConfig?: ProcessConfig;
-    trigger?: React.ReactElement;
+    mode            : 'create' | 'edit';
+    processConfig?  : ProcessConfig;
+    trigger?        : ReactElement;
+    disabled?       : boolean;
 }
 
 
-export function ProcessConfigDialog({
+export function ProcessConfigDialog( {
     mode,
     processConfig,
     trigger,
-}: ProcessConfigDialogProps) {
+    disabled,
+}: ProcessConfigDialogProps ) {
     const [open, setOpen]                   = useState( false );
     const [confirmOpen, setConfirmOpen]     = useState( false );
     const [pendingValues, setPendingValues] = useState<ProcessConfigFormValues | null>( null );
@@ -106,13 +108,13 @@ export function ProcessConfigDialog({
 
     const defaultTrigger =
         mode === 'create' ? (
-            <Button>
-                <Plus className="mr-2 h-4 w-4" />
+            <Button size="sm" className="gap-1.5" disabled={ disabled }>
+                <Plus className="size-3.5" />
                 Nueva configuración
             </Button>
         ) : (
-            <Button variant="outline" size="sm">
-                <Pencil className="mr-2 h-4 w-4" />
+            <Button variant="outline" size="sm" className="gap-1.5" disabled={ disabled }>
+                <Pencil className="size-3.5" />
                 Editar
             </Button>
         );
@@ -128,7 +130,11 @@ export function ProcessConfigDialog({
     return (
         <>
         <Dialog open={ open } onOpenChange={ setOpen }>
-            <DialogTrigger render={ trigger ?? defaultTrigger } />
+            <DialogTrigger render={
+                disabled && trigger
+                    ? cloneElement( trigger, { disabled: true } as any )
+                    : ( trigger ?? defaultTrigger )
+            } />
 
             <DialogContent className="max-h-[90vh] sm:max-w-xl overflow-y-auto">
                 <DialogHeader>
