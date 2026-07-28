@@ -1,20 +1,33 @@
 import { NextResponse } from 'next/server';
-import { store } from '@/lib/data/process-configs';
-
-const delay = () => new Promise((r) => setTimeout(r, 3000));
+import { ENV }          from '@/config/envs/env';
 
 export async function DELETE(
-  _req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  await delay();
-  const { id } = await params;
-  const ok = store.delete( id );
-  if ( !ok ) {
-    return NextResponse.json(
-      { message: 'Configuración no encontrada.' },
-      { status: 404 }
-    );
-  }
-  return new NextResponse(null, { status: 204 });
+    _req: Request,
+    { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
+    try {
+        const { id } = await params;
+
+        const response = await fetch( `${ENV.REQUEST_BACK_URL}/process-configs/${id}`, {
+            method  : 'DELETE',
+            headers : {
+                'accept': '*/*',
+            },
+        } );
+
+        if ( !response.ok ) {
+            const errData = await response.json().catch( () => ( {} ) );
+            return NextResponse.json(
+                { message: errData?.message || 'Error al eliminar la configuración del proceso.' },
+                { status: response.status }
+            );
+        }
+
+        return new NextResponse( null, { status: 204 } );
+    } catch ( error: any ) {
+        return NextResponse.json(
+            { message: error?.message || 'Internal Server Error' },
+            { status: 500 }
+        );
+    }
 }

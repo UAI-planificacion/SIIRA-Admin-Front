@@ -1,9 +1,28 @@
 import { NextResponse } from 'next/server';
-import { store } from '@/lib/data/process-configs';
+import { ENV }          from '@/config/envs/env';
 
-const delay = () => new Promise((r) => setTimeout(r, 3000));
+export async function GET(): Promise<NextResponse> {
+    try {
+        const response = await fetch( `${ENV.REQUEST_BACK_URL}/process-configs`, {
+            method  : 'GET',
+            headers : {
+                'accept': '*/*',
+            },
+        } );
 
-export async function GET() {
-  await delay();
-  return NextResponse.json(store.list());
+        if ( !response.ok ) {
+            return NextResponse.json(
+                { error: `Error fetching process configs: ${response.statusText}` },
+                { status: response.status }
+            );
+        }
+
+        const data = await response.json();
+        return NextResponse.json( data, { status: 200 } );
+    } catch ( error: any ) {
+        return NextResponse.json(
+            { error: error?.message || 'Internal Server Error' },
+            { status: 500 }
+        );
+    }
 }

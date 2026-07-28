@@ -1,20 +1,34 @@
 import { NextResponse } from 'next/server';
-import { store } from '@/lib/data/process-configs';
+import { ENV }          from '@/config/envs/env';
 import type { ProcessConfigInput } from '@/types/process-config';
 
-const delay = () => new Promise((r) => setTimeout(r, 3000));
+export async function POST( req: Request ): Promise<NextResponse> {
+    try {
+        const body = ( await req.json() ) as ProcessConfigInput;
 
-export async function POST(req: Request) {
-  await delay();
-  const body = (await req.json()) as ProcessConfigInput;
+        const response = await fetch( `${ENV.REQUEST_BACK_URL}/process-configs`, {
+            method  : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
+                'accept'       : '*/*',
+            },
+            body    : JSON.stringify( body ),
+        } );
 
-  if (store.existsByAcademicPeriod(body.academicPeriod)) {
-    return NextResponse.json(
-      { message: 'Ya existe un proceso con ese periodo académico.' },
-      { status: 409 }
-    );
-  }
+        if ( !response.ok ) {
+            const errData = await response.json().catch( () => ( {} ) );
+            return NextResponse.json(
+                { message: errData?.message || 'Error al crear la configuración del proceso.' },
+                { status: response.status }
+            );
+        }
 
-  const created = store.create(body);
-  return NextResponse.json(created, { status: 201 });
+        const data = await response.json();
+        return NextResponse.json( data, { status: 201 } );
+    } catch ( error: any ) {
+        return NextResponse.json(
+            { message: error?.message || 'Internal Server Error' },
+            { status: 500 }
+        );
+    }
 }
