@@ -1,8 +1,13 @@
 'use client';
 
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
-import { CalendarClock, Users, Clock, Hash, ClipboardCopy } from 'lucide-react';
+import { ElementType, JSX } from 'react';
+
+import {
+    CalendarClock,
+    Users
+}                   from 'lucide-react';
+import { format }   from 'date-fns';
+import { es }       from 'date-fns/locale';
 
 import {
     Card,
@@ -10,127 +15,124 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card';
+}                                       from '@/components/ui/card';
 import { StatusBadge }                  from '@/components/process-configs/status-badge';
 import { ProcessConfigDialog }          from '@/components/process-configs/process-config-dialog';
 import { DeleteProcessConfigDialog }    from '@/components/process-configs/delete-process-config-dialog';
 import type { ProcessConfig }           from '@/types/process-config';
 
 
-function formatDate(iso: string) {
-    return format(new Date(iso), "d 'de' MMMM 'de' yyyy, HH:mm", { locale: es });
+const formatDate = ( iso: string ): string => format( new Date( iso ), "d 'de' MMM 'de' yyyy, HH:mm", { locale: es });
+
+
+interface InfoRowProps {
+    icon    : ElementType;
+    label   : string;
+    value   : string;
 }
 
 
-function InfoRow({
+function InfoRow( {
     icon: Icon,
     label,
     value,
-}: {
-    icon: React.ElementType;
-    label: string;
-    value: string;
-}) {
+}: InfoRowProps ): JSX.Element {
     return (
-        <div className="flex items-start gap-2.5 justify-start">
-            <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+        <div className="flex items-start gap-2 justify-start">
+            <Icon className="h-3.5 w-3.5 shrink-0 text-muted-foreground mt-0.5" />
 
-            <div className="min-w-0">
-                <p className="text-xs font-medium text-muted-foreground">{label}</p>
+            <div className="min-w-0 space-y-0.5">
+                <p className="text-[11px] font-medium text-muted-foreground">{ label }</p>
 
-                <p className="text-sm font-medium">{value}</p>
+                <p className="text-xs font-semibold text-foreground">{ value }</p>
             </div>
         </div>
     );
 }
 
+
 export function ProcessConfigCard({
     config,
 }: {
     config: ProcessConfig;
-}) {
+}): JSX.Element {
+    const periodLabel = config.period
+        ? `${config.period.id} - ${config.period.name}`
+        : config.periodId;
+
     return (
-        <Card className="flex flex-col transition-shadow hover:shadow-md">
-            <CardHeader className="space-y-0">
+        <Card className="flex flex-col transition-all hover:shadow-md">
+            <CardHeader className="space-y-0 pb-1">
                 <div className="flex gap-2 items-center justify-between w-full">
-                    <CardTitle className="text-lg">{config.academicPeriod}</CardTitle>
+                    <CardTitle className="text-lg font-bold">{ periodLabel }</CardTitle>
 
                     <StatusBadge status={config.status} />
                 </div>
-
-                {/* <span className='text-[10px] text-muted-foreground underline flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors'>
-                    { config.id }
-                    <ClipboardCopy className='size-2.5' />
-                </span> */}
-
-                {/* <div className="flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
-                    <Users className="h-3.5 w-3.5 text-muted-foreground" />
-
-                    <span className="text-sm font-semibold">
-                        {config.totalRealStudents}
-                    </span>
-                </div> */}
             </CardHeader>
 
             <CardContent className="flex-1 space-y-3">
-                <div className="grid gap-3 sm:grid-cols-2">
-                    <InfoRow
-                        icon    = { CalendarClock }
-                        label   = "Borrador inicio"
-                        value   = { formatDate( config.draftStartDate )}
-                    />
-
-                    <InfoRow
-                        icon    = { CalendarClock }
-                        label   = "Borrador fin"
-                        value   = { formatDate( config.draftEndDate )}
-                    />
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                    <InfoRow
-                        icon    = { Users }
-                        label   = "Toma de ramos inicio"
-                        value   = { formatDate( config.startDate )}
-                    />
-
-                    <InfoRow
-                        icon    = { Users }
-                        label   = "Toma de ramos fin"
-                        value   = { formatDate( config.endDate )}
-                    />
-                </div>
-
-                <div className="flex items-center gap-2 rounded-md border bg-muted/40 px-3 py-2 justify-between">
-                    <div className='flex gap-2 items-center'>
-                        <Clock className="h-4 w-4 text-muted-foreground" />
-
-                        <span className="text-sm font-medium">
-                            {config.dailyStartHour}:00 - {config.dailyEndHour}:00 hrs
-                        </span>
+                {/* Etapa de planificación */}
+                <div className="rounded-xl border border-border/60 bg-muted/20 p-3 space-y-2.5 transition-colors hover:bg-muted/30">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground border-b border-border/40 pb-1.5">
+                        <CalendarClock className="h-3.5 w-3.5 text-primary" />
+                        <span>Etapa de planificación</span>
                     </div>
-                    {/* <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
-                        <Hash className="h-3 w-3" />
-                        { config.id.slice( -6 )}
-                    </span> */}
 
-                    <div className="flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
-                        <Users className="h-3.5 w-3.5 text-muted-foreground" />
+                    <div className="grid gap-2 sm:grid-cols-2">
+                        <InfoRow
+                            icon    = { CalendarClock }
+                            label   = "Inicio"
+                            value   = { formatDate( config.planningStartDate )}
+                        />
 
-                        <span className="text-sm font-semibold">
-                            { config.totalRealStudents }
-                        </span>
+                        <InfoRow
+                            icon    = { CalendarClock }
+                            label   = "Fin"
+                            value   = { formatDate( config.planningEndDate )}
+                        />
+                    </div>
+                </div>
+
+                {/* Etapa de inscripción */}
+                <div className="rounded-xl border border-border/60 bg-muted/20 p-3 space-y-2.5 transition-colors hover:bg-muted/30">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground border-b border-border/40 pb-1.5">
+                        <Users className="h-3.5 w-3.5 text-primary" />
+                        <span>Etapa de inscripción</span>
+                    </div>
+
+                    <div className="grid gap-2 sm:grid-cols-2">
+                        <InfoRow
+                            icon    = { Users }
+                            label   = "Inicio"
+                            value   = { formatDate( config.enrollmentStartDate )}
+                        />
+
+                        <InfoRow
+                            icon    = { Users }
+                            label   = "Fin"
+                            value   = { formatDate( config.enrollmentEndDate )}
+                        />
                     </div>
                 </div>
             </CardContent>
 
-            <CardFooter className="justify-end gap-2">
-                <ProcessConfigDialog mode="edit" processConfig={config} />
+            <CardFooter className="flex items-center justify-between gap-2 border-t pt-4 mt-2">
+                <div className="flex items-center gap-1.5 text-sm text-muted-foreground bg-muted/40 px-2.5 py-1 rounded-lg border">
+                    <Users className="h-4 w-4 shrink-0" />
+                    <span className="font-semibold text-foreground">
+                        { config.totalRealStudents }
+                    </span>
+                    <span className="text-xs">alumnos</span>
+                </div>
 
-                <DeleteProcessConfigDialog
-                    processConfig={config}
-                    variant="button"
-                />
+                <div className="flex gap-2">
+                    <ProcessConfigDialog mode="edit" processConfig={ config } />
+
+                    <DeleteProcessConfigDialog
+                        processConfig   = { config }
+                        variant         = "button"
+                    />
+                </div>
             </CardFooter>
         </Card>
     );
