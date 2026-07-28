@@ -36,7 +36,7 @@ export function Header(): React.JSX.Element {
                             />
                         </a>
 
-                        <h1 className="hidden sm:flex text-2xl sm:text-xl lg:text-2xl xl:text-3xl font-bold text-white">Nombre Proyecto</h1>
+                        <h1 className="hidden sm:flex text-2xl sm:text-xl lg:text-2xl xl:text-3xl font-bold text-white">SIIRA Admin</h1>
                     </div>
 				</div>
 
