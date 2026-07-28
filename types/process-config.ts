@@ -13,7 +13,6 @@ export const PROCESS_STATUS_LABELS: Record<ProcessStatus, string> = {
 
 export interface ProcessConfig {
     id                  : string;
-    periodId            : string;
     status              : ProcessStatus;
     totalRealStudents   : number;
     planningStartDate   : string;
@@ -22,7 +21,7 @@ export interface ProcessConfig {
     enrollmentEndDate   : string;
     createdAt           : string;
     updatedAt           : string;
-    period?             : Period;
+    period              : Period;
 }
 
 
