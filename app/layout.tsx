@@ -1,8 +1,9 @@
-import type { Metadata } from 'next';
-
-import { ThemeProvider } from 'next-themes';
+import { JSX, ReactNode }   from 'react';
+import type { Metadata }    from 'next';
+import { ThemeProvider }    from 'next-themes';
 
 import './globals.css';
+
 import { Header }           from '@/components/shared/home/Header';
 import { QueryProvider }    from '@/components/providers/query-provider';
 import { Toaster }          from '@/components/ui/sonner';
@@ -10,8 +11,8 @@ import { Footer }           from '@/components/shared/home/footer';
 
 
 export const metadata: Metadata = {
-    title       : 'Proyect',
-    description : 'Descripción del proyecto.',
+    title       : 'SIIRA Admin',
+    description : 'Administrador de SIIRA, configuración de procesos.',
     icons       : {
         icon        : '/favicon.ico',
         shortcut    : '/favicon.ico',
@@ -21,14 +22,14 @@ export const metadata: Metadata = {
 
 
 interface RootLayoutProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 
-export default function RootLayout( { children }: Readonly<RootLayoutProps> ): React.JSX.Element {
+export default function RootLayout({ children }: Readonly<RootLayoutProps> ): JSX.Element {
     return (
         <html
-            lang             = "es"
+            lang = "es"
             suppressHydrationWarning
         >
             <body className="min-h-screen flex flex-col">
