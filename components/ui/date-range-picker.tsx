@@ -1,24 +1,29 @@
-import * as React from 'react';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
-import { Calendar as CalendarIcon } from 'lucide-react';
-import { DateRange } from 'react-day-picker';
+import { JSX } from 'react';
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import {
+    Calendar as CalendarIcon
+}                       from 'lucide-react';
+import { format }       from 'date-fns';
+import { es }           from 'date-fns/locale';
+import { DateRange }    from 'react-day-picker';
+
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from '@/components/ui/popover';
+}                   from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { Button }   from '@/components/ui/button';
+import { cn }       from '@/lib/utils';
+
 
 interface DatePickerWithRangeProps {
-    value?: DateRange;
-    onChange?: ( value: DateRange | undefined ) => void;
-    placeholder?: string;
-    disabled?: boolean;
-    className?: string;
+    value?          : DateRange;
+    onChange?       : ( value: DateRange | undefined ) => void;
+    placeholder?    : string;
+    disabled?       : boolean;
+    className?      : string;
+    disabledDays?   : any;
 }
 
 export function DatePickerWithRange( {
@@ -27,7 +32,8 @@ export function DatePickerWithRange( {
     placeholder = 'Seleccionar fecha',
     disabled,
     className,
-}: DatePickerWithRangeProps ): React.JSX.Element {
+    disabledDays,
+}: DatePickerWithRangeProps ): JSX.Element {
     const formatMonthShort = ( date: Date ): string => {
         return format( date, 'd MMM yyyy', { locale: es } ).replace( '.', '' );
     };
@@ -59,6 +65,7 @@ export function DatePickerWithRange( {
                         <span>{ placeholder }</span>
                     ) }
                 </PopoverTrigger>
+
                 <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                         autoFocus
@@ -68,6 +75,7 @@ export function DatePickerWithRange( {
                         onSelect        = { onChange }
                         numberOfMonths  = { 2 }
                         locale          = { es }
+                        disabled        = { disabledDays }
                     />
                 </PopoverContent>
             </Popover>
