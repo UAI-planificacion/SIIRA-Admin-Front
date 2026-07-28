@@ -56,9 +56,7 @@ export function ProcessConfigCard({
 }: {
     config: ProcessConfig;
 }): JSX.Element {
-    const periodLabel = config.period
-        ? `${config.period.id} - ${config.period.name}`
-        : config.periodId;
+    const periodLabel = `${config.period.id} - ${config.period.name}`;
 
     return (
         <Card className="flex flex-col transition-all hover:shadow-md">
@@ -119,14 +117,22 @@ export function ProcessConfigCard({
             <CardFooter className="flex items-center justify-between gap-2 border-t pt-4 mt-2">
                 <div className="flex items-center gap-1.5 text-sm text-muted-foreground bg-muted/40 px-2.5 py-1 rounded-lg border">
                     <Users className="h-4 w-4 shrink-0" />
+
                     <span className="font-semibold text-foreground">
                         { config.totalRealStudents }
                     </span>
-                    <span className="text-xs">alumnos</span>
+
+                    <span className="text-xs hidden md:flex lg:hidden xl:flex">
+                        alumnos
+                    </span>
                 </div>
 
                 <div className="flex gap-2">
-                    <ProcessConfigDialog mode="edit" processConfig={ config } />
+                    <ProcessConfigDialog
+                        mode            = "edit"
+                        processConfig   = { config }
+                        disabled        = { config.status === 'PLANNING_STAGE' || config.status === 'ENROLLMENT_STAGE' }
+                    />
 
                     <DeleteProcessConfigDialog
                         processConfig   = { config }
