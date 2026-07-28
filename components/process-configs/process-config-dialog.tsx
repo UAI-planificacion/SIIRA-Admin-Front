@@ -35,7 +35,7 @@ import {
     PROCESS_STATUS_LABELS,
     type ProcessConfig,
 }                                       from '@/types/process-config';
-import type { ProcessConfigFormValues } from '@/lib/validations/process-config';
+import type { ProcessConfigFormValues } from '@/components/process-configs/validations/process-config';
 import { Button }                       from '@/components/ui/button';
 
 
@@ -71,15 +71,13 @@ export function ProcessConfigDialog({
         if (!pendingValues) return;
 
         const payload = {
-            academicPeriod      : pendingValues.academicPeriod,
+            periodId            : pendingValues.periodId,
             status              : pendingValues.status,
             totalRealStudents   : pendingValues.totalRealStudents,
-            draftStartDate      : new Date( pendingValues.draftStartDate ).toISOString(),
-            draftEndDate        : new Date( pendingValues.draftEndDate ).toISOString(),
-            startDate           : new Date( pendingValues.startDate ).toISOString(),
-            endDate             : new Date( pendingValues.endDate ).toISOString(),
-            dailyStartHour      : pendingValues.dailyStartHour,
-            dailyEndHour        : pendingValues.dailyEndHour,
+            planningStartDate   : new Date( pendingValues.planningStartDate ).toISOString(),
+            planningEndDate     : new Date( pendingValues.planningEndDate ).toISOString(),
+            enrollmentStartDate : new Date( pendingValues.enrollmentStartDate ).toISOString(),
+            enrollmentEndDate   : new Date( pendingValues.enrollmentEndDate ).toISOString(),
         };
 
         try {
@@ -120,10 +118,10 @@ export function ProcessConfigDialog({
         );
 
     const confirmDescription = isEdit
-        ? `¿Confirmas los cambios para el periodo "${pendingValues?.academicPeriod}" (estado: ${
+        ? `¿Confirmas los cambios para el periodo "${pendingValues?.periodId}" (estado: ${
             pendingValues ? PROCESS_STATUS_LABELS[pendingValues.status] : ''
         })?`
-        : `¿Confirmas la creación del periodo "${pendingValues?.academicPeriod}" (estado: ${
+        : `¿Confirmas la creación del periodo "${pendingValues?.periodId}" (estado: ${
             pendingValues ? PROCESS_STATUS_LABELS[pendingValues.status] : ''
         })?`;
 
@@ -132,7 +130,7 @@ export function ProcessConfigDialog({
         <Dialog open={ open } onOpenChange={ setOpen }>
             <DialogTrigger render={ trigger ?? defaultTrigger } />
 
-            <DialogContent className="max-h-[90vh] sm:max-w-2xl overflow-y-auto">
+            <DialogContent className="max-h-[90vh] sm:max-w-xl overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {isEdit
