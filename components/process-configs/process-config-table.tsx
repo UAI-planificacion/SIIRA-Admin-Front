@@ -30,71 +30,71 @@ export function ProcessConfigTable( {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[12%]">Periodo</TableHead>
+            <TableHead className="w-[15%]">Periodo</TableHead>
             <TableHead className="w-[15%]">Estado</TableHead>
             <TableHead className="w-[10%] text-right">Alumnos</TableHead>
-            <TableHead className="w-[23%]">Borrador</TableHead>
-            <TableHead className="w-[23%]">Toma de ramos</TableHead>
-            <TableHead className="w-[12%] text-center">Horario</TableHead>
+            <TableHead className="w-[28%]">Planificación</TableHead>
+            <TableHead className="w-[27%]">Inscripción</TableHead>
             <TableHead className="w-[5%] text-right">Acciones</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {configs.map((c) => (
-            <TableRow key={c.id}>
-              <TableCell className="font-medium">{c.academicPeriod}</TableCell>
-              <TableCell>
-                <StatusBadge status={c.status} />
-              </TableCell>
-              <TableCell className="text-right">
-                {c.totalRealStudents}
-              </TableCell>
-              <TableCell className="text-xs text-muted-foreground">
-                {fmt(c.draftStartDate)}
-                <br />→ {fmt(c.draftEndDate)}
-              </TableCell>
-              <TableCell className="text-xs text-muted-foreground">
-                {fmt(c.startDate)}
-                <br />→ {fmt(c.endDate)}
-              </TableCell>
-              <TableCell className="text-center text-xs">
-                {c.dailyStartHour}:00 - {c.dailyEndHour}:00
-              </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-1">
-                  <ProcessConfigDialog
-                    mode="edit"
-                    processConfig={c}
-                    trigger={
-                      <button
-                        type="button"
-                        aria-label="Editar"
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="h-4 w-4"
+          {configs.map((c) => {
+            const periodLabel = c.period ? `${c.period.id} - ${c.period.name}` : c.periodId;
+
+            return (
+              <TableRow key={c.id}>
+                <TableCell className="font-medium">{periodLabel}</TableCell>
+                <TableCell>
+                  <StatusBadge status={c.status} />
+                </TableCell>
+                <TableCell className="text-right">
+                  {c.totalRealStudents}
+                </TableCell>
+                <TableCell className="text-xs text-muted-foreground">
+                  {fmt(c.planningStartDate)}
+                  <br />→ {fmt(c.planningEndDate)}
+                </TableCell>
+                <TableCell className="text-xs text-muted-foreground">
+                  {fmt(c.enrollmentStartDate)}
+                  <br />→ {fmt(c.enrollmentEndDate)}
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-1">
+                    <ProcessConfigDialog
+                      mode="edit"
+                      processConfig={c}
+                      trigger={
+                        <button
+                          type="button"
+                          aria-label="Editar"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                         >
-                          <path d="M12 20h9" />
-                          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
-                        </svg>
-                      </button>
-                    }
-                  />
-                  <DeleteProcessConfigDialog
-                    processConfig={c}
-                    variant="icon"
-                  />
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="h-4 w-4"
+                          >
+                            <path d="M12 20h9" />
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                          </svg>
+                        </button>
+                      }
+                    />
+                    <DeleteProcessConfigDialog
+                      processConfig={c}
+                      variant="icon"
+                    />
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
