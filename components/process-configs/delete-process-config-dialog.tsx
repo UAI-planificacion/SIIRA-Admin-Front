@@ -60,6 +60,10 @@ export function DeleteProcessConfigDialog({
             </Button>
         );
 
+    const periodLabel = processConfig.period
+        ? `${processConfig.period.id} - ${processConfig.period.name}`
+        : processConfig.periodId;
+
     return (
         <AlertDialog open={ open } onOpenChange={ setOpen }>
             <AlertDialogTrigger render={ trigger } />
@@ -72,7 +76,7 @@ export function DeleteProcessConfigDialog({
                         Esta acción no se puede deshacer. Se eliminará el periodo
                         <span className="font-semibold">
                             {' '}
-                            {processConfig.academicPeriod}
+                            { periodLabel }
                         </span>{' '}
                         de forma permanente.
                     </AlertDialogDescription>
@@ -82,9 +86,9 @@ export function DeleteProcessConfigDialog({
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
 
                     <AlertDialogAction
-                        disabled={deleteMutation.isPending}
-                        onClick={handleConfirm}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        disabled    = { deleteMutation.isPending }
+                        onClick     = { handleConfirm }
+                        className   = "bg-destructive text-destructive-foreground hover:bg-destructive/90"
                     >
                         {deleteMutation.isPending && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
