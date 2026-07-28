@@ -78,13 +78,13 @@ export function ProcessConfigForm( {
     const form = useForm<ProcessConfigFormValues>( {
         resolver            : zodResolver( processConfigSchema ),
         defaultValues       : {
-            periodId            : initialData?.periodId                                     ?? '',
-            status              : initialData?.status                                       ?? 'PENDING',
-            totalRealStudents   : initialData?.totalRealStudents                            ?? 0,
-            planningStartDate   : initialData ? toLocalInput( initialData.planningStartDate )  : '',
-            planningEndDate     : initialData ? toLocalInput( initialData.planningEndDate )    : '',
-            enrollmentStartDate : initialData ? toLocalInput( initialData.enrollmentStartDate )  : '',
-            enrollmentEndDate   : initialData ? toLocalInput( initialData.enrollmentEndDate )    : '',
+            periodId            : initialData?.period.id                                        ?? '',
+            status              : initialData?.status                                           ?? 'PENDING',
+            totalRealStudents   : initialData?.totalRealStudents                                ?? 0,
+            planningStartDate   : initialData ? toLocalInput( initialData.planningStartDate )   : '',
+            planningEndDate     : initialData ? toLocalInput( initialData.planningEndDate )     : '',
+            enrollmentStartDate : initialData ? toLocalInput( initialData.enrollmentStartDate ) : '',
+            enrollmentEndDate   : initialData ? toLocalInput( initialData.enrollmentEndDate )   : '',
         },
     } );
 
@@ -284,6 +284,7 @@ export function ProcessConfigForm( {
                                             multiple            = { false }
                                             isLoading           = { isLoadingPeriods }
                                             onSelectionChange   = { field.onChange }
+                                            disabled            = { !!initialData }
                                         />
                                     </FormControl>
 
